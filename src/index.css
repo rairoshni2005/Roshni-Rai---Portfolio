@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Poppins", sans-serif;
+  --color-dark: #1e1e1e;
+  --color-darker: #121212;
+  --color-light: #f8f8f8;
+  --color-light-card: #ffffff;
+  --color-accent: #6366f1; /* Indigo */
+  --color-accent-light: #818cf8; /* Light Indigo */
+}
+
+@layer base {
+  body {
+    background-color: var(--color-light);
+    color: var(--color-darker);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+.dark-section {
+  background-color: var(--color-darker);
+  color: var(--color-light);
+}
+
+.light-section {
+  background-color: var(--color-light);
+  color: var(--color-darker);
+}
+
+/* Custom styles for scribbles / decorative elements like Behance reference */
+.scribble {
+  opacity: 0.15;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Noise Grain Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  content: "";
+  opacity: 0.05;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  filter: contrast(150%) brightness(100%);
+}
+
+/* Custom Cursor Essentials */
+body {
+  cursor: none !important;
+}
+
+a, button, [role="button"] {
+  cursor: none !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-darker); 
+}
+::-webkit-scrollbar-thumb {
+  background: #333; 
+  border-radius: 10px;
+  border: 3px solid var(--color-darker);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent); 
+}
