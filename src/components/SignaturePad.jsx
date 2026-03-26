@@ -5,49 +5,81 @@ import { X, Check, Trash2, Edit3 } from 'lucide-react';
 const SignaturePad = ({ isOpen, onClose }) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [ctx, setCtx] = useState(null);
+  const ctxRef = useRef(null);
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     if (isOpen && canvasRef.current) {
       const canvas = canvasRef.current;
-      canvas.width = canvas.offsetWidth * 2;
-      canvas.height = canvas.offsetHeight * 2;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(canvas.offsetWidth * dpr);
+      canvas.height = Math.floor(canvas.offsetHeight * dpr);
       const context = canvas.getContext('2d');
-      context.scale(2, 2);
+      // Ensure drawing coordinates are in CSS pixels (offsetX/offsetY).
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
       context.lineCap = 'round';
       context.strokeStyle = '#FFFFFF';
       context.lineWidth = 2;
-      setCtx(context);
+      ctxRef.current = context;
+      setIsDrawing(false);
+      setIsDirty(false);
+
+      // Load the previously saved signature as default so refresh/open doesn't change it.
+      const saved = localStorage.getItem('roshni_signature');
+      if (saved) {
+        const img = new Image();
+        img.onload = () => {
+          // Clear any existing strokes and paint the saved signature.
+          context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+          context.drawImage(img, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
+        };
+        img.src = saved;
+      } else {
+        context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+      }
     }
   }, [isOpen]);
 
   const startDrawing = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
-    ctx.beginPath();
-    ctx.moveTo(offsetX, offsetY);
+    const context = ctxRef.current;
+    if (!context) return;
+    setIsDirty(true);
+    context.beginPath();
+    context.moveTo(offsetX, offsetY);
     setIsDrawing(true);
   };
 
   const draw = (e) => {
     if (!isDrawing) return;
     const { offsetX, offsetY } = e.nativeEvent;
-    ctx.lineTo(offsetX, offsetY);
-    ctx.stroke();
+    const context = ctxRef.current;
+    if (!context) return;
+    context.lineTo(offsetX, offsetY);
+    context.stroke();
   };
 
   const stopDrawing = () => {
-    ctx.closePath();
+    const context = ctxRef.current;
+    if (context) context.closePath();
     setIsDrawing(false);
   };
 
   const clear = () => {
-    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    const context = ctxRef.current;
+    if (!context || !canvasRef.current) return;
+    context.clearRect(0, 0, canvasRef.current.offsetWidth, canvasRef.current.offsetHeight);
+    setIsDirty(false);
   };
 
   const save = () => {
+    if (!canvasRef.current) return;
     const dataUrl = canvasRef.current.toDataURL();
-    localStorage.setItem('roshni_signature', dataUrl);
-    window.dispatchEvent(new CustomEvent('signature-updated'));
+    // Only persist when user actually drew/changed something.
+    if (isDirty) {
+      localStorage.setItem('roshni_signature', dataUrl);
+      window.dispatchEvent(new CustomEvent('signature-updated'));
+    }
     onClose();
   };
 

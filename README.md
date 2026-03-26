@@ -344,3 +344,132 @@ All content is managed directly inside components:
 </p>
 
 ---
+# Roshni Rai — Portfolio
+
+Interactive, single-page portfolio built with **React + Vite + Tailwind CSS**, featuring a “system UI” layer (Command Center, achievements, night vision, signature pad) and animation-heavy sections powered by **Framer Motion**.
+
+## Table of contents
+
+- [Quickstart](#quickstart)
+- [Tech stack](#tech-stack)
+- [Project structure](#project-structure)
+- [Editing content](#editing-content)
+- [Key features](#key-features)
+- [App architecture](#app-architecture)
+- [Scripts](#scripts)
+- [Build output](#build-output)
+- [Deployment](#deployment)
+- [Troubleshooting](#troubleshooting)
+- [Docs](#docs)
+
+## Quickstart
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the URL Vite prints (usually `http://localhost:5173`).
+
+## Tech stack
+
+- **Runtime**: React 19 (`react`, `react-dom`)
+- **Bundler**: Vite
+- **Styling**: Tailwind CSS v4 via `@tailwindcss/vite` + project CSS in `src/index.css`
+- **Animation**: `framer-motion`
+- **Icons**: `lucide-react`, `react-icons`
+- **Linting**: ESLint (`npm run lint`)
+
+## Project structure
+
+High-level map:
+
+- `index.html`: HTML shell + metadata + mounts `#root`
+- `src/main.jsx`: React entry point
+- `src/App.jsx`: Top-level composition + global “system” overlays
+- `src/components/*`: Sections and interactive system components
+- `public/`: static assets served at `/` (e.g. `/images/...` if present)
+- `dist/`: production build output (generated)
+
+For deeper, file-by-file notes, see `docs/ARCHITECTURE.md`.
+
+## Editing content
+
+Most text/content is currently defined *inline* in component files as arrays/JSX (no CMS).
+
+- **Navigation items / section anchors**: `src/components/Navbar.jsx`
+- **Hero titles/roles + CV button behavior**: `src/components/Hero.jsx`
+- **About section (bio + contact links)**: `src/components/About.jsx`
+- **Work Experience timeline entries**: `src/components/WorkExperience.jsx` (array named `experiences`)
+- **Projects / Case Studies carousel entries**: `src/components/Projects.jsx` (array named `projects`)
+- **Footer contact/social**: `src/components/Footer.jsx` (and `src/components/TerminalContact.jsx`)
+
+If you change section IDs, keep anchors in sync:
+
+- Section IDs: `#home`, `#about`, `#skills`, `#work`, `#projects`, `#education`, `#contact`
+- Navbar anchors must match those IDs (and the `IntersectionObserver` logic depends on them)
+
+## Key features
+
+- **Command Center (⌘K / Ctrl+K)**: search + “system commands” modal, theme switching, and shortcuts.
+- **Event-driven UI (CustomEvent bus)**: global actions are fired as `window.dispatchEvent(new CustomEvent(...))`.
+- **Achievements system**: unlockable “secrets” persisted to `localStorage`.
+- **Night Vision overlay**: toggled via a global event.
+- **Resume/CV “decryption” flow**: opened via a global event (Hero button / Command Center).
+- **Signature pad**: saves a signature image to `localStorage` and displays it in the footer.
+- **High-motion interactions**: scroll-based transforms, hover lenses, cursor effects, etc.
+
+Full feature specs (events, storage keys, triggers) are documented in `docs/FEATURES.md`.
+
+## App architecture
+
+This is a **single-page scroll site** (no router mounted). Sections are rendered in `src/App.jsx`, and the navbar scrolls to anchors.
+
+System overlays communicate through a lightweight global event pattern:
+
+- The “sender” dispatches an event (example: `open-vault`)
+- `App.jsx` listens once and toggles modal/overlay state
+
+See `docs/ARCHITECTURE.md` for the exact event names and flows.
+
+## Scripts
+
+From `package.json`:
+
+- `npm run dev`: start Vite dev server
+- `npm run build`: production build into `dist/`
+- `npm run preview`: preview the production build locally
+- `npm run lint`: run ESLint
+
+## Build output
+
+- Production assets are generated into `dist/`.
+- Deployments should serve `dist/` as the static output directory.
+
+## Deployment
+
+This repo is already linked to **Vercel** (there is a `.vercel/project.json`).
+
+Common static hosting settings for Vite:
+
+- **Build command**: `npm run build`
+- **Output directory**: `dist`
+
+Detailed guides for Vercel / Netlify / GitHub Pages are in `docs/DEPLOYMENT.md`.
+
+## Troubleshooting
+
+- **Blank page on refresh (static hosts)**: ensure SPA fallback rewrites to `index.html` (see `docs/DEPLOYMENT.md`).
+- **Images not loading**: verify paths and whether assets live in `public/` (served from `/...`) vs imported from `src/assets`.
+- **Cursor missing**: this site intentionally sets `cursor: none` in `src/index.css`; disable that if you want the default cursor.
+
+More fixes are in `docs/TROUBLESHOOTING.md`.
+
+## Docs
+
+- `docs/ARCHITECTURE.md`: structure, data flow, CustomEvent “event bus”, and localStorage contracts
+- `docs/FEATURES.md`: feature-by-feature specs (Command Center, achievements, night vision, etc.)
+- `docs/DEVELOPMENT.md`: local dev setup, conventions, and debugging tips
+- `docs/DEPLOYMENT.md`: deploy to Vercel/Netlify/GitHub Pages + SPA rewrite rules
+- `docs/CONTENT_EDITING.md`: where to edit content safely (projects, experience, contact, images)
+- `docs/TROUBLESHOOTING.md`: common issues + fixes

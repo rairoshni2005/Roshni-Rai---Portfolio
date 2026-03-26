@@ -28,7 +28,7 @@ const ResumeDecryption = ({ isOpen, onClose }) => {
     // This assumes the user places resume.pdf in the public folder
     const link = document.createElement('a');
     link.href = '/resume.pdf';
-    link.download = 'Roshni_Rai_Resume.pdf';
+    link.download = 'ROSHNI RAI - Resume.pdf';
     link.click();
     onClose();
   };
