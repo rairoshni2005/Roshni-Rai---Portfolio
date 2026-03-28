@@ -9,14 +9,27 @@ const skills = [
   { name: "UI/UX Prototyping", cat: "Design" },
   { name: "Journey Mapping", cat: "Design" },
   { name: "Persona Dev", cat: "Design" },
+  { name: "Wireframing", cat: "Design" },
+  { name: "Interactive Design", cat: "Design" },
   { name: "React JS", cat: "Dev" },
-  { name: "Node / Express", cat: "Dev" },
+  { name: "Node JS", cat: "Dev" },
+  { name: "Express", cat: "Dev" },
   { name: "JavaScript", cat: "Dev" },
+  { name: "HTML5", cat: "Dev" },
   { name: "CSS / Tailwind", cat: "Dev" },
+  { name: "Python / Flask", cat: "Dev" },
+  { name: "C++ / DSA", cat: "Dev" },
+  { name: "MongoDB", cat: "Dev" },
+  { name: "Firebase", cat: "Dev" },
+  { name: "Flutter / Dart", cat: "Dev" },
+  { name: "Git & GitHub", cat: "Dev" },
+  { name: "Framer Motion", cat: "Dev" },
+  { name: "Figma", cat: "Design" },
   { name: "Project Management", cat: "Soft" },
   { name: "Leadership", cat: "Soft" },
   { name: "Public Speaking", cat: "Soft" },
-  { name: "Event Planning", cat: "Soft" }
+  { name: "Event Planning", cat: "Soft" },
+  { name: "Team Collaboration", cat: "Soft" }
 ];
 
 const MagneticTag = ({ name, cat }) => {
@@ -76,7 +89,7 @@ const MagneticTag = ({ name, cat }) => {
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={0.6}
       onDragEnd={resetMouse}
-      className={`px-6 py-3 rounded-full border cursor-grab active:cursor-grabbing transition-colors duration-300 ${getCatColor()} backdrop-blur-sm whitespace-nowrap text-lg font-light tracking-wide shadow-lg hover:shadow-xl`}
+      className={`px-4 py-2.5 sm:px-6 sm:py-3 rounded-full border cursor-grab active:cursor-grabbing transition-colors duration-300 ${getCatColor()} backdrop-blur-sm whitespace-nowrap text-sm sm:text-lg font-light tracking-wide shadow-lg hover:shadow-xl touch-manipulation`}
     >
       {name}
     </motion.div>
@@ -85,14 +98,14 @@ const MagneticTag = ({ name, cat }) => {
 
 const Skills = () => {
   return (
-    <Section id="skills" theme="dark" className="py-32 bg-[#0a0a0a] overflow-hidden relative">
+    <Section id="skills" theme="dark" className="py-32 overflow-hidden relative">
       {/* Background Decorative Elements */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-[var(--color-accent)] rounded-full mix-blend-screen filter blur-[180px] opacity-[0.03] pointer-events-none"></div>
 
-      <div className="flex flex-col lg:flex-row gap-20 items-center">
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
         
         <motion.div 
-          className="lg:w-1/3 z-10"
+          className="lg:w-1/3 z-10 text-center lg:text-left w-full"
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -102,10 +115,10 @@ const Skills = () => {
              <div className="w-10 h-[2px] bg-[var(--color-accent-light)]"></div>
              <span className="text-sm font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">Expertise</span>
           </div>
-          <h2 className="text-6xl md:text-8xl font-bold mb-8 tracking-tighter leading-none text-white overflow-visible group cursor-default">
+          <h2 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-8 tracking-tighter leading-none text-white overflow-visible group cursor-default">
             The <span className="font-serif italic font-light relative inline-block text-[var(--color-accent-light)]">Toolkit</span>
           </h2>
-          <p className="text-gray-400 text-xl font-light leading-relaxed max-w-sm">
+          <p className="text-gray-400 text-lg sm:text-xl font-light leading-relaxed max-w-sm mx-auto lg:mx-0">
             I've curated a specialized set of skills across research, design, and code—interactive, adaptive, and always evolving.
           </p>
           <p className="text-gray-600 text-xs mt-12 uppercase tracking-widest font-bold">
@@ -114,7 +127,7 @@ const Skills = () => {
         </motion.div>
 
         <motion.div 
-          className="lg:w-2/3 flex flex-wrap gap-4 justify-center items-center py-20 relative min-h-[500px]"
+          className="lg:w-2/3 flex flex-wrap gap-3 sm:gap-4 justify-center items-center py-12 sm:py-20 relative min-h-[280px] sm:min-h-[500px]"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

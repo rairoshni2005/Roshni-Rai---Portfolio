@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Section from './Section';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { MousePointer2, Lock, Unlock } from 'lucide-react';
+import Spline from '@splinetool/react-spline';
+import ScrambleText from './ScrambleText';
 
 const Hero = () => {
   const { scrollY } = useScroll();
@@ -22,7 +24,6 @@ const Hero = () => {
   const [roshniMessage, setRoshniMessage] = useState("");
   const [isDragging, setIsDragging] = useState(false);
 
-  // Motion values for the heading position
   const headX = useMotionValue(0);
   const headY = useMotionValue(0);
   const headXSpring = useSpring(headX, { damping: 30, stiffness: 200 });
@@ -41,7 +42,6 @@ const Hero = () => {
     setIsDragging(false);
     setDragCount(prev => prev + 1);
 
-    // Auto-return logic
     setTimeout(() => {
       if (!isRoshniFixing) {
         headX.set(0);
@@ -51,7 +51,6 @@ const Hero = () => {
   };
 
   useEffect(() => {
-    // Trigger Roshni's intervention after EVERY drag
     if (dragCount > 0 && !isRoshniFixing) {
       triggerIntervention();
       if (dragCount >= 2) {
@@ -62,19 +61,14 @@ const Hero = () => {
 
   const triggerIntervention = async () => {
     setIsRoshniFixing(true);
-    // Picks messages sequentially based on drag count
     const msg = messages[(dragCount - 1) % messages.length];
     setRoshniMessage(msg);
 
-    // Wait for cursor to "arrive" at the heading
     setTimeout(() => {
       headX.set(0);
       headY.set(0);
 
-      // Wait for "fixing" animation to finish, then hide cursor
-      setTimeout(() => {
-        setIsRoshniFixing(false);
-      }, 1500);
+      setTimeout(() => setIsRoshniFixing(false), 1500);
     }, 800);
   };
 
@@ -102,11 +96,7 @@ const Hero = () => {
   useEffect(() => {
     const handlePulse = (e) => setPulse(e.detail.volume);
     window.addEventListener('audio-pulse', handlePulse);
-
-    const interval = setInterval(() => {
-      setAutoIndex(prev => prev + 1);
-    }, 3000); // Rotate every 3s
-
+    const interval = setInterval(() => setAutoIndex(prev => prev + 1), 3000);
     return () => {
       window.removeEventListener('audio-pulse', handlePulse);
       clearInterval(interval);
@@ -115,15 +105,39 @@ const Hero = () => {
 
   const currentRoleIndex = (dragCount + autoIndex) % 3;
 
+  const [splineLoaded, setSplineLoaded] = useState(false);
+
   return (
     <Section
       id="home"
       theme="dark"
-      className="h-screen items-center justify-center text-center overflow-hidden flex flex-col relative bg-[#0a0a0a]"
+      className="min-h-[100dvh] min-h-screen h-auto sm:h-screen items-center justify-center text-center overflow-hidden flex flex-col relative py-24 sm:py-0"
       onMouseMove={handleMouseMove}
     >
       {/* Premium Background Elements */}
       <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-[#111] to-transparent pointer-events-none z-0"></div>
+
+      {/* 3D Spline Glass Orb */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 md:-translate-x-[20%] lg:-translate-x-[10%] -translate-y-1/2 w-[min(100vw,420px)] h-[min(100vw,420px)] sm:w-[500px] sm:h-[500px] lg:w-[800px] lg:h-[800px] z-0 opacity-70 sm:opacity-80 transition-opacity duration-1000 pointer-events-auto"
+        style={{ 
+          maskImage: 'radial-gradient(circle at center, black 30%, transparent 60%)', 
+          WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 60%)' 
+        }}
+      >
+         <motion.div 
+           initial={{ opacity: 0, scale: 0.8 }}
+           animate={{ opacity: splineLoaded ? 1 : 0, scale: splineLoaded ? 1 : 0.8 }}
+           transition={{ duration: 2, ease: "easeOut" }}
+           className="w-full h-full"
+         >
+           <Spline 
+             scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode" 
+             onLoad={() => setSplineLoaded(true)}
+             style={{ cursor: 'grab' }}
+           />
+         </motion.div>
+      </div>
 
       {/* Interactive Aura Blob (Audio Reactive) */}
       <motion.div
@@ -167,18 +181,19 @@ const Hero = () => {
         )}
       </AnimatePresence>
 
-      <motion.div style={{ y: y1, opacity: opacity1 }} className="relative z-10 w-full px-4">
+      <motion.div style={{ y: y1, opacity: opacity1 }} className="relative z-10 w-full px-3 sm:px-4 pointer-events-none max-w-[100vw]">
+        
         {/* DRAG TO MOVE INDICATOR */}
         <div className="flex flex-col items-center mb-6">
           <AnimatePresence>
             {!isDragging && !isRoshniFixing && (
               <motion.div
-                className="bg-white text-black text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1 mb-2 rounded shadow-sm flex items-center gap-2"
+                className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 mb-3 rounded-full shadow-sm flex items-center gap-2 pointer-events-none"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8 }}
               >
-                Drag to move
+                <ScrambleText text="Drag to move" delay={1.5} duration={1000} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -189,16 +204,18 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="h-[1px] w-12 bg-gray-700"></div>
-            <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Portfolio 2024</span>
-            <div className="h-[1px] w-12 bg-gray-700"></div>
+            <div className="h-[1px] w-12 bg-white/20"></div>
+            <span className="text-xs tracking-[0.3em] uppercase text-white/50 font-mono">
+               <ScrambleText text="Portfolio 2026" delay={0.5} duration={1200} />
+            </span>
+            <div className="h-[1px] w-12 bg-white/20"></div>
           </motion.div>
         </div>
 
-        <div className="relative inline-block group">
+        <div className="relative inline-block group pointer-events-auto">
           {/* Main Content (Visual) */}
           <motion.h1 
-            className="text-7xl md:text-9xl lg:text-[11rem] font-bold tracking-tighter mb-4 text-white leading-none cursor-grab active:cursor-grabbing select-none relative z-10"
+            className="text-[clamp(2.75rem,12vw,7rem)] sm:text-7xl md:text-9xl lg:text-[11rem] font-bold tracking-tighter mb-4 text-white leading-none cursor-grab active:cursor-grabbing select-none relative z-20 drop-shadow-2xl"
             style={{ x: headXSpring, y: headYSpring }}
             drag
             dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
@@ -209,22 +226,14 @@ const Hero = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           >
-            Roshni<span className="font-serif italic font-light ml-4 md:ml-8 text-[var(--color-accent-light)] group-hover:text-white transition-all duration-700 group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">Rai</span>
+            <ScrambleText text="Roshni" delay={0.2} duration={1500} />
+            <span className="font-serif italic font-light ml-4 md:ml-8 text-[var(--color-accent-light)] group-hover:text-white transition-all duration-700 group-hover:drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">
+               <ScrambleText text="Rai" delay={0.6} duration={1500} />
+            </span>
           </motion.h1>
-
-          {/* Visual Container Box on Hover/Drag */}
-          <motion.div 
-            className="absolute -inset-8 border border-white/10 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            style={{ x: headXSpring, y: headYSpring }}
-          >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30"></div>
-            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/30"></div>
-            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30"></div>
-            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30"></div>
-          </motion.div>
         </div>
         
-        <div className="h-10 md:h-12 flex justify-center items-center relative">
+        <div className="h-10 md:h-12 flex justify-center items-center relative mt-2 pointer-events-auto">
           <AnimatePresence mode="wait">
              <motion.p 
               key={currentRoleIndex} 
@@ -232,7 +241,7 @@ const Hero = () => {
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
               transition={{ duration: 0.4 }}
-              className="text-xl md:text-3xl text-white font-bold tracking-[0.2em] uppercase font-mono bg-white/5 px-6 py-2 rounded-full border border-white/10"
+              className="text-sm sm:text-lg md:text-2xl text-white/90 font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase font-mono bg-[#0a0a0a]/80 backdrop-blur-xl px-4 py-2.5 sm:px-8 sm:py-3 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] max-w-[95vw]"
             >
               {[
                 "UI/UX Researcher",
@@ -247,24 +256,24 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-12 flex flex-col md:flex-row gap-6 justify-center"
+          className="mt-16 flex flex-col md:flex-row gap-6 justify-center pointer-events-auto"
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block" data-magnetic>
             <button
               onClick={handleScrollToProjects}
-              className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-white transition-all duration-300 overflow-hidden bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-white/20 backdrop-blur-md w-full md:w-auto"
+              className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-white transition-all duration-300 overflow-hidden bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-[var(--color-accent-light)] backdrop-blur-lg w-full md:w-auto shadow-[0_0_30px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.2)]"
             >
-              <span className="relative z-10 tracking-[0.2em] uppercase text-xs font-bold">View Projects</span>
-              <motion.div className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent)] to-[#4B0082] opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+              <span className="relative z-10 tracking-[0.2em] uppercase text-xs font-bold font-mono">View Projects</span>
+              <motion.div className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent)] to-[#4B0082] opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
             </button>
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block" data-magnetic>
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('open-decryption'))}
-              className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-black transition-all duration-300 overflow-hidden bg-white border border-white rounded-full hover:bg-[var(--color-accent-light)] hover:border-white w-full md:w-auto shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-black transition-all duration-300 overflow-hidden bg-white border border-transparent rounded-full hover:bg-[var(--color-accent-light)] w-full md:w-auto shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(var(--color-accent-light-rgb),0.5)]"
             >
-              <div className="relative z-10 flex items-center gap-3 tracking-[0.2em] uppercase text-xs font-bold">
+              <div className="relative z-10 flex items-center gap-3 tracking-[0.2em] uppercase text-xs font-bold font-mono">
                 <Lock size={14} className="group-hover:hidden" />
                 <Unlock size={14} className="hidden group-hover:block" />
                 Access CV
@@ -276,21 +285,21 @@ const Hero = () => {
 
       {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
+        className="absolute bottom-[6.5rem] sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10 pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 1 }}
+        transition={{ delay: 2, duration: 1 }}
       >
-        <div className="w-[1px] h-12 bg-gray-800 overflow-hidden relative">
+        <div className="w-[1px] h-16 bg-white/10 overflow-hidden relative rounded-full">
           <motion.div
-            className="w-full h-1/2 bg-white"
+            className="w-full h-1/2 bg-[var(--color-accent-light)] rounded-full shadow-[0_0_10px_var(--color-accent-light)]"
             variants={{
               start: { y: "-100%" },
               end: { y: "200%" }
             }}
             initial="start"
             animate="end"
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear", repeatDelay: 0.5 }}
           ></motion.div>
         </div>
       </motion.div>

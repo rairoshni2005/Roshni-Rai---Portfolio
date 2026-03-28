@@ -7,7 +7,7 @@ const CommandCenter = () => {
   const [search, setSearch] = useState("");
 
   const logs = [
-    { id: 1, type: "milestone", text: "2024: Published Behance-inspired Portfolio v2", date: "Present" },
+    { id: 1, type: "milestone", text: "2026: Published Behance-inspired Portfolio v2", date: "Present" },
     { id: 2, type: "career", text: "Reliance Jio: 100+ Screens Audited for JioGames", date: "2023" },
     { id: 3, type: "career", text: "ITM BTL: 700+ Daily Registrations via Designed App", date: "2023" },
     { id: 4, type: "skills", text: "Mastered Framer Motion for High-End Interaction", date: "Ongoing" },
@@ -39,16 +39,6 @@ const CommandCenter = () => {
       shortcut: ['D'],
       action: () => {
         window.dispatchEvent(new CustomEvent('open-decryption'));
-        setIsOpen(false);
-      }
-    },
-    { 
-      id: 'signature', 
-      title: 'Update Signature', 
-      icon: <Edit3 className="w-5 h-5" />, 
-      shortcut: ['S'],
-      action: () => {
-        window.dispatchEvent(new CustomEvent('open-signature'));
         setIsOpen(false);
       }
     },
@@ -88,9 +78,22 @@ const CommandCenter = () => {
       }
     };
 
+    const openFromUi = () => {
+      setIsOpen(prev => {
+        if (!prev) {
+          window.dispatchEvent(new CustomEvent('unlock-achievement', { detail: { id: 'FOUND_CMD_K' } }));
+        }
+        return true;
+      });
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    window.addEventListener('open-command-center', openFromUi);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('open-command-center', openFromUi);
+    };
+  }, [isOpen]);
 
   const changeTheme = (theme) => {
     document.documentElement.style.setProperty('--color-accent', theme.primary);
@@ -123,7 +126,7 @@ const CommandCenter = () => {
 
           {/* Modal */}
           <motion.div 
-            className="relative w-full max-w-2xl bg-[#121212] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            className="relative w-full max-w-2xl max-h-[min(90dvh,720px)] flex flex-col bg-[#121212] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
             initial={{ scale: 0.95, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.95, y: 20 }}
@@ -146,7 +149,7 @@ const CommandCenter = () => {
             </div>
 
             {/* Results Grid */}
-            <div className="max-h-[60vh] overflow-y-auto p-2 scrollbar-hide">
+            <div className="min-h-0 flex-1 max-h-[50dvh] sm:max-h-[60vh] overflow-y-auto p-2 scrollbar-hide">
               {/* System Commands */}
               {filteredCommands.length > 0 && (
                 <div className="p-4">

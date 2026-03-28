@@ -1,10 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const FluidCursor = () => {
   const canvasRef = useRef(null);
   const points = useRef([]);
+  const [useFluid, setUseFluid] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
+  );
 
   useEffect(() => {
+    setUseFluid(window.matchMedia('(pointer: fine)').matches);
+  }, []);
+
+  useEffect(() => {
+    if (!useFluid) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -97,7 +105,9 @@ const FluidCursor = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animFrame);
     };
-  }, []);
+  }, [useFluid]);
+
+  if (!useFluid) return null;
 
   return (
     <canvas

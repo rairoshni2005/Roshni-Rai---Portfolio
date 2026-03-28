@@ -60,7 +60,7 @@ const TerminalContact = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
+    <div className="w-full max-w-4xl mx-auto bg-[#0a0a0a] border border-white/5 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
       {/* Terminal Header */}
       <div className="bg-white/5 px-6 py-3 border-b border-white/5 flex items-center justify-between">
         <div className="flex gap-2">

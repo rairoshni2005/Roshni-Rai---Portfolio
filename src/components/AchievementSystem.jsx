@@ -48,14 +48,14 @@ const AchievementSystem = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-24 right-8 z-[100000] pointer-events-none">
+    <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 md:left-auto md:right-8 md:bottom-24 z-[100000] pointer-events-none">
       <AnimatePresence>
         {notification && (
           <motion.div 
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 100, opacity: 0 }}
-            className="bg-[#121212]/90 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-4 pointer-events-auto min-w-[300px]"
+            className="bg-[#121212]/90 backdrop-blur-xl border border-white/10 p-3 sm:p-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-3 sm:gap-4 pointer-events-auto w-full min-w-0 sm:min-w-[300px]"
           >
             <div className={`w-12 h-12 rounded-xl ${notification.color} flex items-center justify-center shadow-lg`}>
               <notification.icon className="text-white" size={24} />

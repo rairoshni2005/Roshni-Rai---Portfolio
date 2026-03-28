@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -6,11 +7,18 @@
   --color-darker: #121212;
   --color-light: #f8f8f8;
   --color-light-card: #ffffff;
-  --color-accent: #6366f1; /* Indigo */
-  --color-accent-light: #818cf8; /* Light Indigo */
+  --color-accent: var(--theme-accent, #6366f1);
+  --color-accent-light: var(--theme-accent-light, #818cf8);
+}
+
+:root {
+  --color-accent-rgb: 99, 102, 241; /* Default Indigo RGB */
 }
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     background-color: var(--color-light);
     color: var(--color-darker);
@@ -18,12 +26,16 @@
     line-height: 1.6;
     margin: 0;
     padding: 0;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     overflow-x: hidden;
   }
 }
 
 .dark-section {
-  background-color: var(--color-darker);
+  /* Transparent so the global ParticleWeb constellation shows through */
+  background-color: transparent;
   color: var(--color-light);
 }
 
@@ -54,13 +66,15 @@
   filter: contrast(150%) brightness(100%);
 }
 
-/* Custom Cursor Essentials */
-body {
-  cursor: none !important;
-}
+/* Custom cursor only on fine pointers (desktop); touch keeps native tap targets */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none !important;
+  }
 
-a, button, [role="button"] {
-  cursor: none !important;
+  a, button, [role="button"] {
+    cursor: none !important;
+  }
 }
 
 /* Custom Scrollbar */
@@ -77,4 +91,13 @@ a, button, [role="button"] {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent); 
+}
+
+/* Horizontal nav / panels on mobile */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

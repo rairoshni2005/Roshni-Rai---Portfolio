@@ -13,19 +13,21 @@ const NeuralLink = () => {
 
   const knowledgeBase = {
     "who": "I am a UI/UX Researcher, Product Designer, and Full-Stack Developer focused on high-end interactive experiences.",
-    "skills": "I specialize in React, Framer Motion, Node.js, and UX Research. My work focuses on 'Technical Luxury'.",
+    "skills": "I specialize in React, Node.js, UX Research, and Python. I love building responsive, beautiful web applications.",
     "contact": "You can reach my physical form via the Secure Transmission terminal at the bottom of the page, or email rairoshni2005@gmail.com.",
-    "projects": "Hover over any project card in the 'Works' section to reveal their technical DNA using the X-Ray Specs.",
+    "projects": "Hover over any project card in the 'Works' section to reveal their technical DNA using the X-Ray tool. You can also click 'View More Detailing' to see full case studies.",
     "hello": "Hello. My neural pathways are optimized for your inquiry. What's on your mind?",
     "hi": "Hello. My neural pathways are optimized for your inquiry. What's on your mind?",
+    "hobbies": "Beyond the screen, I explore literature, visual arts, strategic gaming, and tinker with cutting-edge tech.",
     "help": "I can provide information about Roshni's skills, professional background, or how to navigate this masterpiece.",
   };
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = (text = null) => {
+    const msgText = typeof text === 'string' ? text : input;
+    if (!msgText.trim()) return;
     
-    const userMsg = input.toLowerCase();
-    setMessages(prev => [...prev, { role: 'user', text: input }]);
+    const userMsg = msgText.toLowerCase();
+    setMessages(prev => [...prev, { role: 'user', text: msgText }]);
     setInput("");
 
     // Look for keywords
@@ -59,7 +61,9 @@ const NeuralLink = () => {
     <>
       {/* Floating Trigger */}
       <motion.button
-        className="fixed bottom-36 right-8 w-14 h-14 bg-[var(--color-accent)] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.3)] z-[5000] border border-white/20"
+        type="button"
+        aria-label="Open Neural Link chat"
+        className="fixed bottom-[6.5rem] right-[max(0.75rem,env(safe-area-inset-right))] md:bottom-36 md:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-[var(--color-accent)] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.3)] z-[5000] border border-white/20 touch-manipulation"
         whileHover={{ scale: 1.1, rotate: 10 }}
         whileTap={{ scale: 0.9 }}
         onClick={openNeuralLink}
@@ -74,7 +78,7 @@ const NeuralLink = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-44 right-8 w-[90vw] md:w-[400px] h-[500px] bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl z-[10001] flex flex-col"
+            className="fixed left-2 right-2 bottom-2 top-[max(4.5rem,env(safe-area-inset-top))] max-h-[min(90dvh,560px)] md:left-auto md:right-8 md:bottom-44 md:top-auto md:w-[400px] md:max-h-[500px] md:h-[500px] w-auto bg-[#0a0a0a] border border-white/10 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl z-[10001] flex flex-col"
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -108,6 +112,19 @@ const NeuralLink = () => {
                     {msg.text}
                   </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Quick Prompts */}
+            <div className="px-4 pb-3 flex gap-2 overflow-x-auto scrollbar-hide flex-shrink-0">
+              {["Who are you?", "What are your skills?", "Contact you?", "Projects?", "Hobbies?"].map((q, i) => (
+                <button 
+                  key={i} 
+                  onClick={() => handleSend(q)}
+                  className="whitespace-nowrap px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-[10px] uppercase font-bold tracking-widest text-white/50 hover:text-[var(--color-accent-light)] hover:border-[var(--color-accent-light)] transition-colors"
+                >
+                  {q}
+                </button>
               ))}
             </div>
 

@@ -64,16 +64,7 @@ const Navbar = () => {
     
     const element = document.querySelector(href);
     if (element) {
-      const offset = 40;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -81,7 +72,7 @@ const Navbar = () => {
     <>
       {/* Standalone Brand Logo (Top Left) */}
       <motion.div 
-        className="fixed top-8 left-8 z-50 mix-blend-difference"
+        className="fixed top-[max(0.75rem,env(safe-area-inset-top))] left-[max(0.75rem,env(safe-area-inset-left))] z-50 mix-blend-difference"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -89,16 +80,16 @@ const Navbar = () => {
         <a 
           href="#home" 
           onClick={(e) => handleClick(e, '#home', 'Home')}
-          className="text-white font-bold text-2xl tracking-tighter group flex items-baseline gap-1"
+          className="text-white font-bold text-lg sm:text-2xl tracking-tighter group flex items-baseline gap-1"
         >
           <span>Roshni</span>
           <span className="font-serif italic font-light text-[var(--color-accent-light)] group-hover:text-white transition-colors">Rai</span>
         </a>
       </motion.div>
 
-      <div className="fixed bottom-10 inset-x-0 z-50 flex justify-center px-6 pointer-events-none">
+      <div className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] inset-x-0 z-50 flex justify-center px-2 sm:px-6 pointer-events-none">
         <motion.nav 
-          className="bg-[#0a0a0a]/70 backdrop-blur-2xl border border-[var(--color-accent-light)]/20 rounded-[2.5rem] px-3 py-2 flex items-center gap-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto"
+          className="bg-[#0a0a0a]/85 backdrop-blur-2xl border border-[var(--color-accent-light)]/20 rounded-[2rem] sm:rounded-[2.5rem] px-1.5 py-1.5 sm:px-3 sm:py-2 flex items-center gap-0.5 sm:gap-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto max-w-[calc(100vw-0.75rem)] overflow-x-auto scrollbar-hide snap-x snap-mandatory touch-pan-x"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -111,7 +102,7 @@ const Navbar = () => {
               onClick={(e) => handleClick(e, item.href, item.name)}
               onMouseEnter={() => setHoveredItem(item.name)}
               onMouseLeave={() => setHoveredItem(null)}
-              className="relative px-4 py-2 group"
+              className="relative px-2.5 py-2 sm:px-4 shrink-0 snap-center group touch-manipulation"
             >
               {/* Tooltip on Hover */}
               <AnimatePresence>
@@ -153,11 +144,13 @@ const Navbar = () => {
           {/* New: System Terminal Toggle */}
           <div className="w-[1px] h-4 bg-white/10 mx-2"></div>
           <button
-            onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-command-center'))}
             onMouseEnter={() => setHoveredItem('System')}
             onMouseLeave={() => setHoveredItem(null)}
             data-magnetic
-            className="relative px-4 py-2 group"
+            className="relative px-2.5 py-2 sm:px-4 shrink-0 snap-center group touch-manipulation"
+            aria-label="Open system terminal"
           >
             <AnimatePresence>
               {hoveredItem === 'System' && (

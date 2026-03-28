@@ -12,7 +12,7 @@ const Section = ({
   return (
     <section 
       id={id} 
-      className={`relative w-full py-20 px-6 md:px-16 lg:px-24 flex flex-col justify-center min-h-[50vh] overflow-hidden ${sectionClass} ${className}`}
+      className={`relative w-full py-16 sm:py-20 px-4 sm:px-6 md:px-16 lg:px-24 flex flex-col justify-center min-h-[40vh] sm:min-h-[50vh] overflow-hidden scroll-mt-24 md:scroll-mt-28 ${sectionClass} ${className}`}
     >
       <div className="absolute inset-0 pointer-events-none opacity-[0.1] overflow-hidden -z-0">
          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
@@ -50,7 +50,7 @@ const Section = ({
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-24px", amount: 0.15 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {children}

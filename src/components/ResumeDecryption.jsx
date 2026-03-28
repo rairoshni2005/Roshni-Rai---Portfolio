@@ -27,8 +27,8 @@ const ResumeDecryption = ({ isOpen, onClose }) => {
   const handleDownload = () => {
     // This assumes the user places resume.pdf in the public folder
     const link = document.createElement('a');
-    link.href = '/resume.pdf';
-    link.download = 'ROSHNI RAI - Resume.pdf';
+    link.href = '/Roshni Rai - Resume.pdf';
+    link.download = 'Roshni Rai - Resume.pdf';
     link.click();
     onClose();
   };
@@ -67,7 +67,7 @@ const ResumeDecryption = ({ isOpen, onClose }) => {
               {status === 'success' && "Decryption Complete"}
             </h2>
             <p className="text-gray-500 text-xs uppercase tracking-widest mb-8 font-mono">
-              Item_ID: ROSHNI_CV_2024.DAT
+              Item_ID: ROSHNI_CV_2026.DAT
             </p>
 
             {status === 'decrypting' && (

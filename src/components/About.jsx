@@ -4,52 +4,47 @@ import { motion } from 'framer-motion';
 
 const About = () => {
   return (
-    <Section id="about" theme="light" className="py-32 bg-[#fdfdfd]">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center max-w-7xl mx-auto">
+    <Section id="about" theme="dark" className="py-32 md:py-48 relative overflow-hidden">
+      {/* Ambient background glow matching the royal theme */}
+      <div className="absolute top-0 right-0 w-[60vw] h-[60vw] bg-[var(--color-accent)]/5 rounded-full mix-blend-screen filter blur-[150px] opacity-70 pointer-events-none translate-x-1/4 -translate-y-1/4"></div>
+      
+      {/* Subtle grid texture overlay */}
+      <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/cubes.png')] opacity-[0.02] pointer-events-none"></div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center max-w-[90%] xl:max-w-7xl mx-auto relative z-10">
+        
         {/* Left: Profile Area */}
         <motion.div 
-          className="lg:col-span-4 relative"
+          className="lg:col-span-5 relative"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden group shadow-2xl">
-            <div className="absolute inset-0 bg-gray-100 z-0"></div>
-            {/* Extremely smooth scaling on image hover per user feedback */}
+          <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-3xl">
+            <div className="absolute inset-0 bg-[#050505]/20 z-10 group-hover:bg-transparent transition-colors duration-[1000ms]"></div>
+            
+            {/* Elegant lighting over the image */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-20 opacity-80"></div>
+
             <img 
               src="/images/profile.png" 
               alt="Roshni Rai" 
-              className="w-full h-full object-cover relative z-10 filter grayscale mix-blend-multiply transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-110"
+              className="w-full h-full object-cover relative z-0 transition-all duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
             />
           </div>
 
-          {/* Restored the rotating circle badge exactly as requested */}
+          {/* Premium Rotating Badge */}
           <motion.div 
-            className="absolute -bottom-10 -right-10 w-48 h-48 bg-white border border-gray-100 shadow-2xl rounded-full flex items-center justify-center p-8 z-30 hidden lg:flex cursor-default"
-            initial={{ rotate: -15 }}
-            whileHover={{ rotate: 0 }}
+            className="absolute -bottom-8 -right-8 w-44 h-44 bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.3)] rounded-full flex items-center justify-center p-6 z-30 hidden lg:flex cursor-default"
+            initial={{ rotate: -15, y: 10 }}
+            whileHover={{ rotate: 0, scale: 1.05, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-             {/* Doodle Circle around badge */}
-             <motion.svg 
-               className="absolute inset-0 w-full h-full text-[var(--color-accent)] opacity-20 -z-10 scale-125"
-               viewBox="0 0 100 100"
-             >
-               <motion.path
-                 d="M50,10 A40,40 0 1,1 49.9,10"
-                 fill="transparent"
-                 stroke="currentColor"
-                 strokeWidth="1"
-                 strokeLinecap="round"
-                 initial={{ pathLength: 0 }}
-                 whileInView={{ pathLength: 1 }}
-                 viewport={{ once: true }}
-                 transition={{ duration: 2, ease: "easeInOut" }}
-               />
-             </motion.svg>
+             {/* Glowing border ring */}
+             <div className="absolute inset-2 border border-[var(--color-accent)]/20 rounded-full group-hover:border-[var(--color-accent)]/50 transition-colors duration-700"></div>
 
-             <p className="font-serif italic text-2xl text-[var(--color-accent)] text-center leading-tight">
+             <p className="font-serif italic text-2xl text-[var(--color-accent-light)] text-center leading-tight drop-shadow-[0_0_15px_rgba(var(--color-accent-rgb),0.5)]">
                Hello, <br/> I'm Roshni.
              </p>
           </motion.div>
@@ -57,85 +52,67 @@ const About = () => {
 
         {/* Right: Summary Text */}
         <motion.div 
-          className="lg:col-span-8 flex flex-col justify-center"
+          className="lg:col-span-7 flex flex-col justify-center"
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="flex items-center gap-4 mb-8">
-             <div className="w-12 h-[2px] bg-[var(--color-accent)]"></div>
-             <span className="text-sm font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">About Me</span>
+          <div className="flex items-center gap-4 mb-10">
+             <div className="w-12 h-[1px] bg-[var(--color-accent)]/60"></div>
+             <span className="text-xs font-mono uppercase tracking-[0.5em] text-[var(--color-accent-light)]">About Me</span>
           </div>
 
-          <h2 className="text-5xl md:text-6xl font-bold mb-10 tracking-tight text-gray-900 leading-[1.1] relative">
-            <span className="block font-serif italic font-light text-[var(--color-accent)] mb-2 relative inline-block group cursor-default"> {/* Added group and cursor-default */}
-              Expert in identifying
-              {/* Doodle Underline */}
-              <motion.svg 
-                className="absolute -bottom-2 left-0 w-full h-4 text-[var(--color-accent-light)] opacity-60 group-hover:opacity-100 transition-all duration-700" // Added group-hover
-                viewBox="0 0 300 20"
-                preserveAspectRatio="none"
-              >
-                <motion.path
-                  d="M0,10 Q50,0 100,10 T200,10 T300,10"
-                  fill="transparent"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
-                  // Added whileHover for wiggle effect on the underline doodle
-                  whileHover={{ 
-                    d: "M0,10 Q50,20 100,10 T200,5 T300,10", // A slightly different path for a wiggle
-                    transition: { duration: 0.4, repeat: Infinity, repeatType: "mirror" }
-                  }}
-                />
-              </motion.svg>
-            </span> 
-            <br className="hidden md:block" /> usablity issues & optimizing design.
+          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tighter text-white leading-[1.15] relative">
+             Expert in identifying
+             <br className="hidden md:block" /> 
+             <span className="font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent-light)] to-[var(--color-accent)] relative inline-block group cursor-default mt-2">
+               usability issues 
+               <div className="absolute -bottom-2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--color-accent-light)] to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+             </span> 
+             {" "}& optimizing design.
           </h2>
           
-          <div className="space-y-6 mb-12">
-            <p className="text-gray-600 leading-relaxed text-2xl font-light">
-               Results-oriented <strong className="font-semibold text-gray-900">UI/UX Researcher, Designer, & Full-Stack Developer</strong>.
+          <div className="space-y-8 mb-16">
+            <p className="text-white/70 leading-relaxed text-xl md:text-2xl font-light">
+               Results-oriented <strong className="font-serif italic text-white font-normal hover:text-[var(--color-accent-light)] transition-colors duration-500 drop-shadow-md">UI/UX Researcher, Designer, & Full-Stack Developer</strong>.
             </p>
-            <ul className="space-y-4 text-xl text-gray-500 font-light border-l-2 border-[var(--color-accent-light)] pl-6">
-              <li className="flex items-center gap-3">
-                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0"></div>
-                 <span>Specializing in UX Research, UI Design, and Full-Stack Web Development.</span>
+            <ul className="space-y-5 text-lg md:text-xl text-white/40 font-light border-l border-[var(--color-accent)]/20 pl-8">
+              <li className="flex items-center gap-4 group">
+                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]/40 group-hover:bg-[var(--color-accent-light)] group-hover:shadow-[0_0_10px_rgba(var(--color-accent-rgb),0.8)] transition-all duration-300 shrink-0"></div>
+                 <span className="group-hover:text-white/80 transition-colors duration-300">Specializing in UX Research, UI Design, and Full-Stack Web Development.</span>
               </li>
-              <li className="flex items-center gap-3">
-                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0"></div>
-                 <span>Proficient in React JS, Node, Express, HTML, and CSS environments.</span>
+              <li className="flex items-center gap-4 group">
+                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]/40 group-hover:bg-[var(--color-accent-light)] group-hover:shadow-[0_0_10px_rgba(var(--color-accent-rgb),0.8)] transition-all duration-300 shrink-0"></div>
+                 <span className="group-hover:text-white/80 transition-colors duration-300">Proficient in React JS, Node, Express, Python, and C++ environments.</span>
               </li>
-              <li className="flex items-center gap-3">
-                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0"></div>
-                 <span>Consistently deploying scalable designs that heighten user engagement.</span>
+              <li className="flex items-center gap-4 group">
+                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]/40 group-hover:bg-[var(--color-accent-light)] group-hover:shadow-[0_0_10px_rgba(var(--color-accent-rgb),0.8)] transition-all duration-300 shrink-0"></div>
+                 <span className="group-hover:text-white/80 transition-colors duration-300">Consistently deploying scalable designs that heighten user engagement.</span>
               </li>
             </ul>
           </div>
           
-          {/* Contact Details Grid - Fixed for mobile responsiveness to prevent overlapping */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8 pt-10 border-t border-gray-200">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 mb-3">Email</p>
-              <a href="mailto:rairoshni2005@gmail.com" className="text-sm md:text-base font-medium text-gray-900 hover:text-[var(--color-accent)] transition-colors break-words">rairoshni2005@gmail.com</a>
-            </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 mb-3">Phone</p>
-              <p className="text-sm md:text-base font-medium text-gray-900 tracking-wider">9082539451</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 mb-3">GitHub</p>
-              <a href="https://github.com/rairoshni2005" target="_blank" rel="noreferrer" className="text-sm md:text-base font-medium text-[var(--color-accent)] underline decoration-[var(--color-accent-light)] underline-offset-4 hover:opacity-80 transition-opacity">/rairoshni2005</a>
-            </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 mb-3">LinkedIn</p>
-              <a href="https://www.linkedin.com/in/roshni-rai08/" target="_blank" rel="noreferrer" className="text-sm md:text-base font-medium text-[var(--color-accent)] underline decoration-[var(--color-accent-light)] underline-offset-4 hover:opacity-80 transition-opacity">/in/roshni-rai08</a>
-            </div>
+          {/* Glassmorphic Contact Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-10 border-t border-white/5">
+            {[
+              { label: 'Email', value: 'rairoshni2005...', full: 'rairoshni2005@gmail.com', link: 'mailto:rairoshni2005@gmail.com' },
+              { label: 'Phone', value: '9082539451', link: 'tel:9082539451' },
+              { label: 'GitHub', value: '/rairoshni2005', link: 'https://github.com/rairoshni2005' },
+              { label: 'LinkedIn', value: '/in/roshni-rai08', link: 'https://www.linkedin.com/in/roshni-rai08/' }
+            ].map((contact, idx) => (
+              <a 
+                key={idx}
+                href={contact.link}
+                title={contact.full || contact.value}
+                target={contact.label === 'Email' || contact.label === 'Phone' ? '_self' : '_blank'}
+                rel="noreferrer"
+                className="group p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-[var(--color-accent-light)] hover:bg-[var(--color-accent)]/5 hover:shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.1)] transition-all duration-500 backdrop-blur-sm"
+              >
+                <p className="text-[9px] font-mono uppercase tracking-[0.3em] text-white/30 group-hover:text-[var(--color-accent-light)] transition-colors mb-3">{contact.label}</p>
+                <p className="text-sm font-medium text-white/60 group-hover:text-white transition-colors truncate">{contact.value}</p>
+              </a>
+            ))}
           </div>
         </motion.div>
       </div>

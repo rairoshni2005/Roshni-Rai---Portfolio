@@ -24,7 +24,7 @@ const VibeIndicator = () => {
     }, 5000);
 
     const handleScroll = () => {
-      const sections = ['home', 'about', 'skills', 'work', 'projects', 'education', 'contact'];
+      const sections = ['home', 'about', 'skills', 'work', 'projects', 'hobbies', 'education', 'contact'];
       for (const id of sections) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top < window.innerHeight / 2) {
@@ -47,17 +47,28 @@ const VibeIndicator = () => {
       case 'about': return "circle(50% at 50% 50%)"; // Sphere
       case 'skills': return "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"; // Cube
       case 'projects': return "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)"; // Star
+      case 'hobbies': return "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)";
+      case 'education': return "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
+      case 'contact': return "circle(50% at 50% 50%)";
       default: return "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)";
     }
   };
 
   return (
     <motion.div 
-      className="fixed bottom-8 left-8 z-[5000] hidden md:flex items-center gap-4 bg-black/40 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-full overflow-hidden cursor-help group/vibe"
+      className="fixed bottom-[5.25rem] left-1/2 -translate-x-1/2 z-[5000] flex w-[min(100%,20rem)] max-w-[calc(100vw-1rem)] md:w-auto md:max-w-none md:translate-x-0 md:bottom-8 md:left-8 items-center gap-2 sm:gap-4 bg-black/40 backdrop-blur-xl border border-white/10 px-3 py-2 sm:px-4 rounded-full overflow-hidden cursor-pointer md:cursor-help group/vibe touch-manipulation"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 2 }}
-      onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
+      onClick={() => window.dispatchEvent(new CustomEvent('open-command-center'))}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.dispatchEvent(new CustomEvent('open-command-center'));
+        }
+      }}
     >
       <div className="flex items-center gap-3">
         <motion.div 
@@ -85,7 +96,7 @@ const VibeIndicator = () => {
            </div>
            {/* Hint Display */}
            <div className="text-[9px] uppercase tracking-widest font-bold text-[var(--color-accent)] h-4 flex items-center whitespace-nowrap">
-             Press ⌘K
+             <span className="md:hidden">Tap</span><span className="hidden md:inline">Press ⌘K</span>
            </div>
         </div>
       </div>
@@ -95,7 +106,7 @@ const VibeIndicator = () => {
       <AnimatePresence mode="wait">
         <motion.div 
           key={status}
-          className="text-[10px] uppercase tracking-widest font-bold text-[var(--color-accent-light)]"
+          className="text-[9px] sm:text-[10px] uppercase tracking-widest font-bold text-[var(--color-accent-light)] truncate max-w-[38%] sm:max-w-[min(12rem,40vw)] md:max-w-none"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}

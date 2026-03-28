@@ -6,23 +6,12 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import TerminalContact from './TerminalContact';
 
 const Footer = () => {
-  const [signature, setSignature] = React.useState(null);
-
-  React.useEffect(() => {
-    const loadSignature = () => {
-      const saved = localStorage.getItem('roshni_achievements_signature') || localStorage.getItem('roshni_signature');
-      setSignature(saved);
-    };
-    loadSignature();
-    window.addEventListener('signature-updated', loadSignature);
-    return () => window.removeEventListener('signature-updated', loadSignature);
-  }, []);
 
   return (
-    <footer className="w-full bg-[#0a0a0a] pt-40 pb-20 overflow-hidden relative">
+    <footer className="w-full pt-24 sm:pt-40 pb-[max(2rem,env(safe-area-inset-bottom))] sm:pb-20 overflow-hidden relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-      <Section id="contact" theme="dark" className="min-h-fit py-0 mb-32">
+      <Section id="contact" theme="dark" className="min-h-fit py-0 mb-16 sm:mb-32">
         <div className="flex flex-col items-center justify-center text-center max-w-5xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -88,34 +77,16 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 border-t border-white/5 pt-20 flex flex-col md:flex-row justify-between items-end gap-8">
         <div className="flex flex-col items-start gap-4">
           <div className="relative group">
-            {signature ? (
-              <motion.img 
-                src={signature} 
-                alt="Roshni Rai Signature" 
-                className="h-16 w-auto"
+              <motion.div 
+                className="text-5xl text-white opacity-80"
+                style={{ fontFamily: "'Great Vibes', cursive" }}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, ease: "easeOut" }}
-              />
-            ) : (
-              <motion.svg 
-                width="200" 
-                height="60" 
-                viewBox="0 0 200 60" 
-                className="text-white fill-none stroke-current opacity-40"
               >
-                <motion.path
-                  d="M20,40 Q30,10 40,40 T60,40 T80,40 T100,20 T120,40 T140,40 T160,40 T180,20" 
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 3, ease: "easeInOut" }}
-                />
-              </motion.svg>
-            )}
+                Roshni Rai
+              </motion.div>
             <div className="absolute -bottom-2 left-0 w-0 group-hover:w-full h-[1px] bg-[var(--color-accent)] transition-all duration-700" />
           </div>
           <div className="text-white/20 text-[10px] font-mono tracking-[0.5rem] uppercase">

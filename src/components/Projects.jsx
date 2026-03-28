@@ -1,58 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-const projects = [
-  {
-    title: "JioGames UX Research & Audit",
-    subtitle: "Reliance Jio Platforms Ltd.",
-    description: "Conducted exhaustive UX audit and research for JioGames STB and Cloud Games Web.",
-    problem: "Identifying usability bottlenecks on Set-Top Box and Web interfaces.",
-    process: "Execution of heuristic evaluations and comprehensive UX audits matching Nielsen's criteria.",
-    outcome: "Actionable design roadmaps optimized accessibility and core user flows.",
-    image: "/images/work1.png",
-    tags: ["UX Research", "Design Audit"]
-  },
-  {
-    title: "BTL App for ITM",
-    subtitle: "Figma",
-    description: "Designed a high-conversion UI/UX interface for student outreach.",
-    problem: "Low engagement and friction-heavy registration process impacting reach.",
-    process: "Rapid prototyping and iterative testing utilizing Figma to streamline funnels.",
-    outcome: "Improved engagement by <strong class='text-white'>30%</strong> with <strong class='text-white'>700+ registrations</strong> in a day.",
-    image: "/images/work2.png",
-    tags: ["UI/UX Design", "Figma"]
-  },
-  {
-    title: "Food Order App",
-    subtitle: "Full-Stack Dev | Flutter + MERN Stack",
-    description: "Developed a scalable full-stack food ordering platform.",
-    problem: "Fragmented ordering systems with poor tracking and inefficient workflows.",
-    process: "Engineered a client-server architecture using Flutter and Node.js with JWT auth.",
-    outcome: "A fully functional system unifying browsing, ordering, and real-time tracking.",
-    image: "/images/work3.png",
-    tags: ["Flutter", "MERN Stack"]
-  },
-  {
-    title: "ZapIt",
-    subtitle: "MERN Stack Web App",
-    description: "Developed a comprehensive full-stack delivery web application.",
-    problem: "Fragmented systems for browsing, ordering, and tracking deliveries reliably.",
-    process: "Engineered a robust backend infrastructure tied to a responsive React frontend.",
-    outcome: "Deployed a feature-complete system unifying browsing, ordering, and live-tracking.",
-    image: "/images/work4.png",
-    tags: ["MERN Stack", "Full-Stack"]
-  },
-  {
-    title: "TaskMate",
-    subtitle: "Full-Stack Dev | Flask + SQLite",
-    description: "Built a minimalist task management application focused on simplicity.",
-    problem: "Cluttered task apps and lack of prioritization or recurring task support.",
-    process: "Developed a Flask backend with SQLite and priority-based filtering logic.",
-    outcome: "A clean and efficient task system for improved personal productivity.",
-    image: "/images/work5.png",
-    tags: ["Flask", "SQLite"]
-  }
-];
+import { Link } from 'react-router-dom';
+import { projects } from '../data/projects';
 
 const ProjectCard = ({ project }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -68,29 +17,51 @@ const ProjectCard = ({ project }) => {
     });
   };
 
+  const handleTouchMove = (e) => {
+    if (!containerRef.current || !e.touches[0]) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.touches[0].clientX - rect.left,
+      y: e.touches[0].clientY - rect.top,
+    });
+  };
+
   return (
     <div 
-      className="relative h-[80vh] w-[90vw] md:w-[75vw] lg:w-[65vw] flex-shrink-0 flex items-center justify-center px-10 group overflow-hidden"
+      className="relative min-h-[85vh] h-auto md:h-[72vh] w-[90vw] md:w-[75vw] lg:w-[65vw] flex-shrink-0 flex items-center justify-center px-4 sm:px-10 py-6 md:py-0 group overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setIsHovered(false)}
     >
-      <div className="flex flex-col lg:flex-row gap-10 items-center justify-between w-full h-full p-8 rounded-[3rem] bg-white/[0.03] border border-white/5 backdrop-blur-3xl shadow-2xl relative overflow-hidden group-hover:bg-white/[0.05] transition-all duration-700">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center justify-between w-full h-full p-5 sm:p-8 rounded-[2rem] sm:rounded-[3rem] bg-white/[0.03] border border-white/5 backdrop-blur-3xl shadow-2xl relative overflow-hidden group-hover:bg-white/[0.05] transition-all duration-700">
         
         {/* Background Subtle Gradient */}
         <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-[var(--color-accent)] to-transparent opacity-30"></div>
 
+        {/* Liquid Foil Holographic Sheen */}
+        <motion.div 
+          className="absolute inset-0 z-50 pointer-events-none transition-opacity duration-500 rounded-[3rem]"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.08), transparent 40%),
+                         radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(var(--color-accent-rgb), 0.1), transparent 50%)`
+          }}
+        />
+
         <motion.div 
           ref={containerRef}
-          className="w-full lg:w-1/2 relative overflow-hidden rounded-[2rem] aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] bg-[#1a1a1a]"
+          className="w-full lg:w-1/2 relative overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] bg-[#1a1a1a]"
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.8 }}
+          onTouchMove={handleTouchMove}
         >
           {/* Base Grayscale Image */}
           <img 
             src={project.image} 
             alt={project.title} 
-            className="w-full h-full object-cover opacity-40 mix-blend-luminosity grayscale transition-all duration-700"
+            className="w-full h-full object-cover opacity-40 mix-blend-luminosity grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:mix-blend-normal transition-all duration-700"
           />
 
           {/* X-Ray / Technical DNA Reveal */}
@@ -144,7 +115,7 @@ const ProjectCard = ({ project }) => {
             ))}
           </div>
           
-          <h3 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-2 text-white tracking-tighter leading-tight group-hover:text-[var(--color-accent-light)] transition-colors duration-500">
+          <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold mb-2 text-white tracking-tighter leading-tight group-hover:text-[var(--color-accent-light)] transition-colors duration-500">
             {project.title}
           </h3>
           <p className="text-[var(--color-accent)] font-serif italic text-xl mb-4">
@@ -154,7 +125,7 @@ const ProjectCard = ({ project }) => {
             {project.description}
           </p>
 
-          <div className="space-y-4 border-l border-gray-800 pl-6 hidden md:block">
+          <div className="space-y-4 border-l border-gray-800 pl-4 sm:pl-6">
              <div className="group/item">
                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] opacity-60 mb-1 group-hover/item:opacity-100 transition-opacity">Goal</h4>
                 <p className="text-gray-400 text-sm leading-snug font-light">{project.problem}</p>
@@ -163,6 +134,15 @@ const ProjectCard = ({ project }) => {
                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] opacity-60 mb-1 group-hover/item:opacity-100 transition-opacity">Outcome</h4>
                 <p className="text-gray-400 text-sm leading-snug font-light" dangerouslySetInnerHTML={{__html: project.outcome}}></p>
              </div>
+          </div>
+
+          <div className="mt-8 flex justify-start">
+            <Link 
+              to={`/project/${project.title.toLowerCase().replace(/\s+/g, '_')}`}
+              className="inline-flex items-center justify-center px-6 py-3 border border-[var(--color-accent-light)]/30 text-[var(--color-accent-light)] text-xs font-bold uppercase tracking-widest rounded-full hover:bg-[var(--color-accent-light)] hover:text-black transition-all"
+            >
+              View More Detailing
+            </Link>
           </div>
         </div>
       </div>
@@ -176,21 +156,26 @@ const Projects = () => {
     target: targetRef,
   });
 
-  const x = useTransform(scrollYProgress, [0.2, 0.9], ["0%", "-380vw"]); // Using vw for more predictable translation
+  const endScrollVw = useMemo(() => {
+    const n = projects.length;
+    return `-${n * 92 + 52}vw`;
+  }, []);
+
+  const x = useTransform(scrollYProgress, [0.2, 0.9], ["0%", endScrollVw]);
 
   return (
     <section 
       id="projects" 
       ref={targetRef} 
-      className="relative h-[600vh] bg-[#0a0a0a]"
+      className="relative min-h-[480vh] md:h-[600vh]"
     >
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+      <div className="sticky top-0 min-h-[100dvh] h-screen flex items-center overflow-hidden">
         {/* Background Aura */}
         <div className="absolute top-0 right-0 w-[60vw] h-[60vw] bg-[var(--color-accent)] rounded-full mix-blend-screen filter blur-[150px] opacity-10 pointer-events-none -translate-y-1/2 translate-x-1/4"></div>
 
         <div className="relative w-full">
           {/* Section Header */}
-          <div className="absolute top-0 left-0 w-full flex flex-col items-center z-20 pointer-events-none pt-12 md:pt-16">
+          <div className="absolute top-0 left-0 w-full flex flex-col items-center z-20 pointer-events-none pt-8 sm:pt-12 md:pt-16 px-4">
             <motion.div 
                className="flex flex-col items-center"
                style={{ opacity: useTransform(scrollYProgress, [0, 0.15, 0.2], [1, 1, 0]) }}
@@ -200,20 +185,20 @@ const Projects = () => {
                  <span className="text-xs font-bold tracking-[0.3em] uppercase text-gray-400">Case Studies</span>
                  <div className="w-12 h-[2px] bg-gray-600"></div>
               </div>
-              <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white leading-none">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter text-white leading-none text-center">
                 Selected <span className="font-serif italic font-light relative text-[var(--color-accent-light)]">Works</span>
               </h2>
             </motion.div>
           </div>
 
           {/* Horizontal Track */}
-          <motion.div style={{ x }} className="flex gap-0 pl-[10vw]">
+          <motion.div style={{ x }} className="flex gap-0 pl-[5vw] sm:pl-[10vw] pt-32 sm:pt-40 md:pt-48 items-center will-change-transform">
             {projects.map((proj, idx) => (
               <ProjectCard key={idx} project={proj} />
             ))}
             
           {/* End Card / Transition */}
-          <div className="h-[80vh] w-[40vw] flex-shrink-0 flex items-center justify-center px-10">
+          <div className="min-h-[50vh] h-[80vh] w-[85vw] sm:w-[40vw] flex-shrink-0 flex items-center justify-center px-6 sm:px-10">
              <div className="text-center group/end">
                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500 mb-4 block group-hover/end:text-[var(--color-accent-light)] transition-colors">End of Case Studies</span>
                 <h3 className="text-3xl font-serif italic text-gray-400 mb-6">The journey continues...</h3>

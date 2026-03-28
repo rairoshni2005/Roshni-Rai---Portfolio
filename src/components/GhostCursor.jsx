@@ -4,8 +4,16 @@ import { MousePointer2 } from 'lucide-react';
 
 const GhostCursor = () => {
   const [ghost, setGhost] = useState(null);
+  const [enabled, setEnabled] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches
+  );
 
   useEffect(() => {
+    setEnabled(window.matchMedia("(pointer: fine)").matches);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
     const spawnGhost = () => {
       // Only spawn occasionally
       if (Math.random() > 0.4) {
@@ -23,7 +31,9 @@ const GhostCursor = () => {
 
     const interval = setInterval(spawnGhost, 20000); // Check every 20s
     return () => clearInterval(interval);
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <AnimatePresence>
