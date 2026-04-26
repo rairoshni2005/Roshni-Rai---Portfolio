@@ -28,7 +28,7 @@ const About = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-20 opacity-80"></div>
 
             <img 
-              src="/images/profile.png" 
+              src="/images/profile.png?v=2"
               alt="Roshni Rai" 
               className="w-full h-full object-cover relative z-0 transition-all duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
             />
