@@ -44,6 +44,63 @@ export const projects = [
     tags: ["UI/UX Design", "Figma", "Lead Management", "Prototyping"]
   },
   {
+    title: "QueueLess",
+    subtitle: "AI-Powered Smart Campus Cafeteria & Queue Management Platform",
+    description: "A full-stack smart cafeteria platform that digitizes food ordering, queue tracking, and campus vendor operations.",
+    overview: "QueueLess is a full-stack smart campus cafeteria platform that digitizes food ordering, queue management, and vendor operations. Students can pre-order meals, monitor live queue positions, and receive pickup notifications, while vendors gain access to real-time analytics and AI-powered demand forecasting.",
+    role: "Full Stack Developer & Product Designer",
+    timeline: "2026",
+    problem: "Campus cafeterias often experience long queues, inefficient order handling, food wastage, and poor visibility into crowd levels. Students lose valuable time waiting, while vendors struggle to predict demand during peak hours.",
+    process: "Designed and developed a full-stack web application with a modern React frontend and scalable Node.js backend. Built a real-time queue tracking system using Socket.io, integrated MongoDB for persistent storage, and implemented an AI prediction module to forecast rush hours and food demand based on historical ordering patterns.",
+    outcome: "QueueLess reduces cafeteria waiting time, improves operational efficiency, minimizes food wastage, and creates a smoother campus dining experience through intelligent automation.",
+    learnings: [
+      "Built scalable real-time systems using Socket.io.",
+      "Designed efficient queue management logic.",
+      "Integrated AI prediction into practical workflows.",
+      "Improved dashboard architecture and API design."
+    ],
+    features: [
+      "Real-time digital queue tracking",
+      "Online food ordering & token generation",
+      "Live order status updates",
+      "Vendor analytics dashboard",
+      "AI-powered demand prediction",
+      "Smart inventory insights"
+    ],
+    image: "/images/work3.png",
+    tags: ["React", "Node.js", "Express.js", "MongoDB", "Socket.io", "Python", "Figma"],
+    github: "https://github.com/rairoshni2005/QueueLess-Smart-Canteen-System"
+  },
+  {
+    title: "FlowSync",
+    subtitle: "Premium AI-Powered Menstrual Wellness Platform",
+    description: "A full-stack AI wellness platform for cycle insights, mood tracking, privacy-first health support, and personalized guidance.",
+    overview: "FlowSync is a full-stack AI-powered menstrual wellness platform that goes beyond period tracking by helping users understand their bodies through personalized cycle predictions, mood tracking, wellness insights, AI guidance, and privacy-focused health management.",
+    role: "Full Stack Developer & Product Designer",
+    timeline: "2026",
+    problem: "Most menstrual tracking apps only provide reminders and cycle dates without offering meaningful health insights, emotional tracking, or personalized wellness guidance. Users need a more intelligent and holistic approach to menstrual health.",
+    process: "Designed and developed a complete wellness ecosystem using React, Node.js, MongoDB, FastAPI, and Python-based AI services. Created a clean user experience focused on wellness tracking while implementing intelligent prediction models, AI-powered health assistance, and privacy-first community features.",
+    outcome: "FlowSync transforms menstrual tracking into an intelligent wellness platform that empowers users with personalized health insights, emotional awareness, and AI-driven recommendations while maintaining privacy and accessibility.",
+    learnings: [
+      "Built AI-assisted healthcare workflows",
+      "Designed secure wellness data architecture",
+      "Integrated FastAPI with a MERN application",
+      "Improved product thinking for healthcare experiences"
+    ],
+    features: [
+      "AI Body Twin wellness insights",
+      "Smart menstrual cycle prediction",
+      "Mood & symptom tracking",
+      "AI wellness companion",
+      "Wellness journal",
+      "Anonymous support community",
+      "Partner wellness sharing"
+    ],
+    image: "/images/work4.png",
+    tags: ["React", "Node.js", "Express.js", "MongoDB", "FastAPI", "Python", "Tailwind CSS", "Figma"],
+    github: "https://github.com/rairoshni2005/FlowSync-Premium-AI-Menstrual-Wellness-Platform"
+  },
+  {
     title: "ZapIt",
     subtitle: "Hyperlocal Delivery Platform",
     overview: "A comprehensive Dunzo-like hyperlocal delivery application designed and developed to replicate a real-world delivery app experience. It serves as a seamless full-stack web application bridging users and delivery partners.",
@@ -63,7 +120,7 @@ export const projects = [
       "Payment gateway integration supporting UPI, Cards, and COD.",
       "Comprehensive Delivery partner management dashboard."
     ],
-    image: "/images/work4.png",
+    image: "/images/work5.png",
     tags: ["MERN Stack", "Node.js", "MongoDB", "React", "Firebase"],
     github: "https://github.com/rairoshni2005/ZapIt-WebApp"
   },
@@ -87,30 +144,8 @@ export const projects = [
       "Persistent Data Storage utilizing MongoDB.",
       "Interactive, chronological Calendar Task View."
     ],
-    image: "/images/work5.png",
+    image: "/images/work6.png",
     tags: ["Flutter", "Dart", "MongoDB", "Mobile Dev"],
     github: "https://github.com/rairoshni2005/flutter-todo-app"
-  },
-  {
-    title: "Food Order App",
-    subtitle: "Full-Stack Dev | Flutter + MERN Stack",
-    overview: "Developed a scalable full-stack food ordering platform designed to address inefficient ordering workflows.",
-    role: "Full-Stack Developer",
-    timeline: "2023",
-    problem: "Fragmented ordering systems with poor tracking and inefficient workflows.",
-    process: "Engineered a robust client-server architecture using Flutter for the frontend and Node.js/Express with JWT authentication for secure backend operations.",
-    outcome: "Deployed a fully functional system that successfully unified browsing, secure ordering, and real-time tracking.",
-    learnings: [
-       "Gained intensive full-stack development experience aligning Flutter with MERN.",
-       "Built secure JWT-based authentication flows."
-    ],
-    features: [
-       "Secure JWT Authentication",
-       "Real-time tracking of orders",
-       "Cross-platform Flutter frontend"
-    ],
-    image: "/images/work3.png",
-    tags: ["Flutter", "MERN Stack", "Node.js", "MongoDB"],
-    github: "https://github.com/rairoshni2005/Online-Food-Ordering-System"
   }
 ];

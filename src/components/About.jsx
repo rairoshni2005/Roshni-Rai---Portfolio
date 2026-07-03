@@ -33,7 +33,7 @@ const About = () => {
               className="w-full h-full object-cover relative z-0 transition-all duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
             />
           </div>
-
+                                                                 
           {/* Premium Rotating Badge */}
           <motion.div 
             className="absolute -bottom-8 -right-8 w-44 h-44 bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.3)] rounded-full flex items-center justify-center p-6 z-30 hidden lg:flex cursor-default"
