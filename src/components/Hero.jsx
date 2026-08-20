@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePres
 import { MousePointer2, Lock, Unlock } from 'lucide-react';
 import Spline from '@splinetool/react-spline';
 import ScrambleText from './ScrambleText';
+import Magnetic from './Magnetic';
 
 const Hero = () => {
   const { scrollY } = useScroll();
@@ -258,28 +259,32 @@ const Hero = () => {
           transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
           className="mt-16 flex flex-col md:flex-row gap-6 justify-center pointer-events-auto"
         >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block" data-magnetic>
-            <button
-              onClick={handleScrollToProjects}
-              className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-white transition-all duration-300 overflow-hidden bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-[var(--color-accent-light)] backdrop-blur-lg w-full md:w-auto shadow-[0_0_30px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.2)]"
-            >
-              <span className="relative z-10 tracking-[0.2em] uppercase text-xs font-bold font-mono">View Projects</span>
-              <motion.div className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent)] to-[#4B0082] opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
-            </button>
-          </motion.div>
+          <Magnetic strength={0.2}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+              <button
+                onClick={handleScrollToProjects}
+                className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-white transition-all duration-300 overflow-hidden bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-[var(--color-accent-light)] backdrop-blur-lg w-full md:w-auto shadow-[0_0_30px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.2)]"
+              >
+                <span className="relative z-10 tracking-[0.2em] uppercase text-xs font-bold font-mono">View Projects</span>
+                <motion.div className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent)] to-[#4B0082] opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+              </button>
+            </motion.div>
+          </Magnetic>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block" data-magnetic>
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('open-decryption'))}
-              className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-black transition-all duration-300 overflow-hidden bg-white border border-transparent rounded-full hover:bg-[var(--color-accent-light)] w-full md:w-auto shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(var(--color-accent-light-rgb),0.5)]"
-            >
-              <div className="relative z-10 flex items-center gap-3 tracking-[0.2em] uppercase text-xs font-bold font-mono">
-                <Lock size={14} className="group-hover:hidden" />
-                <Unlock size={14} className="hidden group-hover:block" />
-                Access CV
-              </div>
-            </button>
-          </motion.div>
+          <Magnetic strength={0.2}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('open-decryption'))}
+                className="group relative inline-flex items-center justify-center px-10 py-5 text-base font-medium text-black transition-all duration-300 overflow-hidden bg-white border border-transparent rounded-full hover:bg-[var(--color-accent-light)] w-full md:w-auto shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(var(--color-accent-light-rgb),0.5)]"
+              >
+                <div className="relative z-10 flex items-center gap-3 tracking-[0.2em] uppercase text-xs font-bold font-mono">
+                  <Lock size={14} className="group-hover:hidden" />
+                  <Unlock size={14} className="hidden group-hover:block" />
+                  Access CV
+                </div>
+              </button>
+            </motion.div>
+          </Magnetic>
         </motion.div>
       </motion.div>
 

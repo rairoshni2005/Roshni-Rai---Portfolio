@@ -143,11 +143,11 @@ function App() {
                 <main>
                   <Hero />
                   <About />
-                  <Skills />
+                  <Projects />
                   <WorkExperience />
+                  <Skills />
                   <Education />
                   <Hobbies />
-                  <Projects />
                 </main>
               } />
               <Route path="/project/:id" element={<ProjectDetail />} />

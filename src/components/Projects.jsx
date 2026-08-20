@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { projects } from '../data/projects';
 
@@ -156,12 +156,19 @@ const Projects = () => {
     target: targetRef,
   });
 
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    mass: 0.5,
+    restDelta: 0.001
+  });
+
   const endScrollVw = useMemo(() => {
     const n = projects.length;
     return `-${n * 92 + 52}vw`;
   }, []);
 
-  const x = useTransform(scrollYProgress, [0.2, 0.9], ["0%", endScrollVw]);
+  const x = useTransform(smoothProgress, [0.2, 0.9], ["0%", endScrollVw]);
 
   return (
     <section 

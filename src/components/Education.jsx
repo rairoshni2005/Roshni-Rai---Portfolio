@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import Section from './Section';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { CalendarDays, Compass, Crown } from 'lucide-react';
 
 const educationData = [
   {
@@ -18,17 +19,21 @@ const educationData = [
 ];
 
 const memberData = [
-  { role: "Co-Head, Placement Club", place: "ITM Skills University", date: "2023 – Present" },
-  { role: "Student Representative", place: "External Cell Club – ITM", date: "Aug 2023 – Present" },
-  { role: "NEP SAARTHI Student Ambassador", place: "UGC, India", date: "Oct 2024 – Present" },
-  { role: "Anchor", place: "Republic Day Celebration", date: "" },
-  { role: "Student Volunteer", place: "Wellness Carnival & U Fest", date: "" }
+  { role: "Co-Head, Placement Club", place: "ITM Skills University", date: "2023 – Present", details: "Supporting placement activities, student coordination, and career-focused initiatives." },
+  { role: "Student Representative", place: "External Cell Club – ITM", date: "Aug 2023 – Present", details: "Connecting students with academic stakeholders and supporting external engagement." },
+  { role: "NEP SAARTHI Student Ambassador", place: "University Grants Commission (UGC), India", date: "Oct 2024 – Present", details: "Promoting NEP 2020 awareness through student engagement and educational policy communication." },
+  { role: "Event Anchor & Host", place: "ITM Skills University", date: "2026 – Present", details: "Hosting academic, technical, cultural, and institutional events with confident stage management." },
+  { role: "Social Media Volunteer", place: "Swift Mumbai", date: "2026 – Present", details: "Supporting technology community outreach through event promotion, communication, and digital content." }
 ];
 
 const activityData = [
-  { role: "Organizer", place: "PIWOT Imagine Hackathon, Mumbai", date: "2025" },
-  { role: "Volunteer", place: "Swift Mumbai Meetup & DevFest Mumbai", date: "2024" },
-  { role: "Participant", place: "Hackathons & Tech Conferences, India", date: "2023–2025" }
+  { role: "Organizer & Host", place: "SummerHacks 2026 · ITM Skills University", date: "May 2026", details: "Helped organize and host a 24-hour intercollegiate hackathon with 600+ participants from 20+ institutions across multiple states.", featured: true },
+  { role: "Event Organizer", place: "B.Tech & MCA Inaugurations 2026 · ITM Skills University", date: "Aug 2026", details: "Supported registrations, logistics, hospitality, certificates, volunteer coordination, and on-ground execution for two university inaugurations." },
+  { role: "Performer", place: "Reliance Family Day 2025 · Jio Platforms Limited", date: "Dec 2025", details: "Selected through auditions to perform alongside Shankar Mahadevan, Siddharth Mahadevan, and Shiv Mahadevan before 100,000+ attendees.", featured: true },
+  { role: "Event Organizer", place: "PIWOT Imagine Hackathon 2025 · PanIIT Alumni India", date: "2025", details: "Supported registration, hospitality, participant engagement, volunteer coordination, and event operations at Jio World Convention Centre, Mumbai." },
+  { role: "Volunteer", place: "Google DevFest Mumbai", date: "2024", details: "Supported attendee registration, event logistics, participant engagement, and community activities." },
+  { role: "Volunteer", place: "Google I/O Watch Party", date: "2024", details: "Supported event coordination, attendee engagement, logistics management, and community interaction." },
+  { role: "Participant", place: "Hackathons & Tech Conferences · India", date: "2023 – 2025", details: "Participated in hackathons, developer meetups, conferences, and community events focused on technology and collaboration." }
 ];
 
 const HolographicSheen = ({ children, className }) => {
@@ -60,68 +65,84 @@ const HolographicSheen = ({ children, className }) => {
   );
 };
 
-const TimelineItem = ({ item, index, isLeft }) => {
-  return (
-    <div className={`w-full flex md:${isLeft ? 'justify-end' : 'justify-start'} justify-start items-center relative py-5 md:py-8 group cursor-default`}>
-      {/* Node dot - ultra subtle */}
-      <div className="absolute left-[3px] md:left-1/2 top-1/2 -translate-y-1/2 -translate-x-[50%] md:-translate-x-1/2 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full border border-white/20 bg-[#050505] z-10 transition-all duration-300 group-hover:scale-150 group-hover:bg-white/40 group-hover:border-white/40"></div>
+const SectionEyebrow = ({ children, accent = false }) => (
+  <div className={`mb-8 flex items-center gap-3 text-sm font-mono uppercase tracking-[0.22em] ${accent ? 'text-[var(--color-accent-light)]' : 'text-white/55'}`}>
+    <span className={`h-px w-8 ${accent ? 'bg-[var(--color-accent-light)]/60' : 'bg-white/30'}`} />
+    <motion.span
+      initial={{ opacity: 0, x: -10 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+    >
+      {children}
+    </motion.span>
+  </div>
+);
 
-      {/* Content flex box */}
-      <motion.div 
-        initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-        className={`w-full md:w-[45%] pl-8 md:pl-0 ${isLeft ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} relative`}
-      >
-        <h4 className="text-lg md:text-xl font-serif text-white/50 group-hover:text-white/90 transition-colors duration-300 mb-1">{item.role}</h4>
-        <div className={`flex flex-col flex-wrap ${isLeft ? 'md:items-end' : 'md:items-start'} items-start gap-1`}>
-          <span className="text-xs md:text-sm font-light tracking-wide text-white/30">{item.place}</span>
-          {item.date && (
-            <span className="text-[9px] font-mono tracking-widest text-[#D4AF37]/40 mt-1 uppercase">{item.date}</span>
-          )}
-        </div>
-      </motion.div>
-    </div>
-  )
-}
-
-const TimelineSection = ({ title, items }) => {
+const MembershipsSection = ({ items }) => {
   return (
-    <div className="relative mb-20 md:mb-32 max-w-4xl mx-auto">
-      <div className="text-center mb-10 md:mb-16">
-         <h3 className="text-[10px] md:text-xs font-mono uppercase tracking-[0.4em] text-white/20 inline-flex items-center justify-center gap-6 w-full">
-           <span className="w-12 h-[1px] bg-white/10"></span>
-           <motion.span 
-             initial={{ opacity: 0 }}
-             whileInView={{ opacity: 1 }}
-             viewport={{ once: true }}
-             transition={{ duration: 1 }}
-           >
-             {title}
-           </motion.span>
-           <span className="w-12 h-[1px] bg-white/10"></span>
-         </h3>
-      </div>
-      
-      <div className="relative w-full">
-        {/* The main vertical connecting laser - deeply subtle */}
-        <div className="absolute top-0 bottom-0 left-[3px] md:left-1/2 md:-translate-x-1/2 w-[1px] bg-white/5 group-hover:bg-white/10 transition-colors duration-700"></div>
-        
-        <div className="flex flex-col w-full">
-          {items.map((item, idx) => (
-             <TimelineItem 
-               key={idx} 
-               item={item} 
-               index={idx} 
-               isLeft={idx % 2 === 0} 
-             />
-          ))}
-        </div>
+    <div className="mb-20 md:mb-28">
+      <SectionEyebrow accent>Leadership &amp; Roles</SectionEyebrow>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item, index) => (
+          <motion.article
+            key={item.role}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, delay: index * 0.08 }}
+            className="group relative flex min-h-[20rem] flex-col overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 transition-colors duration-500 hover:border-[var(--color-accent-light)]/60"
+          >
+            <Crown className="absolute -right-2 -top-2 h-20 w-20 rotate-12 text-white/[0.035] transition-transform duration-700 group-hover:rotate-0 group-hover:scale-110" />
+            <span className="relative z-10 text-sm font-mono text-[var(--color-accent-light)]/80">0{index + 1}</span>
+            <div className="relative z-10 mt-10 flex-1">
+              <h4 className="text-xl font-semibold leading-snug text-white/90 group-hover:text-white">{item.role}</h4>
+              <p className="mt-3 text-base leading-relaxed text-white/55">{item.place}</p>
+              <p className="mt-4 text-sm leading-relaxed text-white/45">{item.details}</p>
+            </div>
+            <div className="relative z-10 mt-6 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+              <span className="text-xs font-mono uppercase tracking-[0.15em] text-white/40">{item.date}</span>
+            </div>
+          </motion.article>
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
+
+const EndeavorsSection = ({ items }) => {
+  return (
+    <div className="relative max-w-5xl">
+      <SectionEyebrow>Notable Endeavors</SectionEyebrow>
+      <div className="relative ml-2 border-l border-white/15 pl-6 sm:ml-5 sm:pl-10">
+        {items.map((item, index) => (
+          <motion.article
+            key={item.role}
+            initial={{ opacity: 0, x: -18 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, delay: index * 0.12 }}
+            className={`group relative border-b border-white/10 py-7 first:pt-2 last:border-0 ${item.featured ? 'rounded-2xl border border-[var(--color-accent-light)]/35 bg-[var(--color-accent)]/[0.08] px-5 my-3' : ''}`}
+          >
+            <span className="absolute -left-[2.05rem] top-8 h-3 w-3 rounded-full border-2 border-[#0a0a0a] bg-[var(--color-accent-light)] shadow-[0_0_0_4px_rgba(var(--color-accent-rgb),0.15)] sm:-left-[2.65rem]" />
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <div className="mb-2 flex items-center gap-2 text-xs font-mono uppercase tracking-[0.16em] text-white/40">
+                  <Compass className="h-4 w-4 text-[var(--color-accent-light)]" /> {item.role}
+                </div>
+                <h4 className="text-xl font-medium leading-snug text-white/90 transition-colors group-hover:text-[var(--color-accent-light)] sm:text-2xl">{item.place}</h4>
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/50 sm:text-base">{item.details}</p>
+              </div>
+              <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-xs font-mono text-white/55">
+                <CalendarDays className="h-3.5 w-3.5" /> {item.date || 'Ongoing'}
+              </span>
+            </div>
+          </motion.article>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Education = () => {
   return (
@@ -172,8 +193,8 @@ const Education = () => {
 
         {/* The Majestic Timeline System for Memberships & Activities */}
         <div className="pt-20 border-t border-white/5">
-          <TimelineSection title="Curated Memberships" items={memberData} />
-          <TimelineSection title="Notable Endeavors" items={activityData} />
+          <MembershipsSection items={memberData} />
+          <EndeavorsSection items={activityData} />
         </div>
 
       </div>
